@@ -11,4 +11,6 @@
     <string name="textName" />
     <string name="details_tag" />
     <string name="hello_world" />
+    <string name="data">data</string>
+    <string name="time">time</string>
 </resources>

@@ -11,11 +11,34 @@
         android:id="@+id/show_name"
         android:layout_width="161dp"
         android:layout_height="46dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="16dp"
         android:text="@string/hello_world"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="hello world" />
+
+    <TextView
+        android:id="@+id/show_date"
+        android:layout_width="158dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/show_name" />
+
+    <TextView
+        android:id="@+id/show_time"
+        android:layout_width="161dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/show_date" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

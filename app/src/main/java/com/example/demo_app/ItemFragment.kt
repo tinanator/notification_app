@@ -48,11 +48,7 @@ class ItemFragment : Fragment() {
 
 
             if (message != null) {
-                allData.addData(Data(message))
-
-                //viewManager = LinearLayoutManager(fragment.context)
-
-                //recyclerView.layoutManager = viewManager
+                allData.addData(Data(message, 7, 8, 7, 8, 8))
             }
         }
     }
