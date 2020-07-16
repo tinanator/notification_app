@@ -8,13 +8,14 @@
 
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/show_name"
+        android:layout_width="161dp"
+        android:layout_height="46dp"
         android:layout_marginTop="40dp"
-        android:text="@string/textName"
+        android:text="@string/hello_world"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="hello world" />
 </androidx.constraintlayout.widget.ConstraintLayout>

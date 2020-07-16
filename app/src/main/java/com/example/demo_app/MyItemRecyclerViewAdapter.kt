@@ -36,12 +36,13 @@ class MyItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dataset.getData()[position]
         holder.idView.text = item.getName()
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnClickListener  {
             listener(item)
             selectedPos = position
             notifyItemChanged(position)
 
         }
+
 
         if (selectedPos == position) {
             holder.itemView.setBackgroundColor(Color.BLUE)

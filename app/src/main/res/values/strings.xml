@@ -9,4 +9,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textName" />
+    <string name="details_tag" />
+    <string name="hello_world" />
 </resources>

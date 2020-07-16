@@ -1,5 +1,7 @@
 package com.example.demo_app
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.ClassCastException
 
 /**
  * A fragment representing a list of Items.
@@ -16,10 +19,23 @@ import androidx.recyclerview.widget.RecyclerView
 class ItemFragment : Fragment() {
 
     private var columnCount = 1
+   // val activity: Activity = context as Activity
+    private lateinit var event : onItemClickListener
 
-    interface onItemClickListener {
-        fun selectItem(s: String?)
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        try {
+            val activity : Activity = context as Activity
+            event = activity as onItemClickListener
+        }
+        catch (e: ClassCastException) {
+            throw ClassCastException(("$activity must override OnMessageRead..."));
+        }
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +76,7 @@ class ItemFragment : Fragment() {
                // viewAdapter = MyItemRecyclerViewAdapter(myDataset)
                 view.adapter = MyItemRecyclerViewAdapter(allData) {
                         Toast.makeText(this.context, "click", Toast.LENGTH_SHORT).show()
+                        event.showDetails(it)
                 }
             }
         }
@@ -87,4 +104,9 @@ class ItemFragment : Fragment() {
                     }
                 }
     }
+
+    interface onItemClickListener {
+        fun showDetails(data:Data)
+    }
+
 }
