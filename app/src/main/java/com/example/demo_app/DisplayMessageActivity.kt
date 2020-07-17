@@ -56,6 +56,12 @@ class DisplayMessageActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun chooseClient(view: View) {
+        val intent = Intent(this, ClientsActivity::class.java)
+        startActivity(intent)
+    }
+
+
     override fun onCreateDialog(id: Int, args: Bundle?): Dialog? {
         if (id == 0) {
             return DatePickerDialog(this, dateSetListener, year, month, day)
