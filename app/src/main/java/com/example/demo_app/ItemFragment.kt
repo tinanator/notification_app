@@ -22,9 +22,6 @@ class ItemFragment : Fragment() {
    // val activity: Activity = context as Activity
     private lateinit var event : onItemClickListener
 
-
-
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -44,24 +41,11 @@ class ItemFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
-        if (arguments != null) {
-            val message = arguments!!.getString("message")
-
-
-//            if (message != null) {
-//            //    allData.addData(Data(message, 7, 8, 7, 8, 8))
-//            }
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
-      //  val dataset = mutableListOf<String>()
-       // dataset.add(("lol"))
-      //  dataset.add(("kek"))
-       // dataset.add(("mda"))
-        // Set the adapter
 
         if (view is RecyclerView) {
             with(view) {
@@ -70,7 +54,6 @@ class ItemFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
 
-               // viewAdapter = MyItemRecyclerViewAdapter(myDataset)
                 view.adapter = MyItemRecyclerViewAdapter(allData) {
                         Toast.makeText(this.context, "click", Toast.LENGTH_SHORT).show()
                         event.showDetails(it)
@@ -80,12 +63,6 @@ class ItemFragment : Fragment() {
         return view
     }
 
-//    fun addItem(item: String) {
-//        dataset.add(item)
-//   //     val adapter = MyItemRecyclerViewAdapter(dataset)
-//        adapter.notifyDataSetChanged()
-//
-//    }
 
     companion object {
 
