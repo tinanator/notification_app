@@ -9,7 +9,7 @@ import java.util.*
 
 //date in ms
 
-class Data(name_: String?, year_:Int, month_: Int, day_:Int, hour_ : Int, minute_ : Int) : Parcelable {
+class Data(name_: String?, year_:Int, month_: Int, day_:Int, hour_ : Int, minute_ : Int, clientName_: String?, clientEmail_: String?) : Parcelable {
 
     private val name = name_
     private val year = year_
@@ -17,6 +17,8 @@ class Data(name_: String?, year_:Int, month_: Int, day_:Int, hour_ : Int, minute
     private val day = day_
     private val minute = minute_
     private val hour = hour_
+    private val clientName = clientName_
+    private val clientEmail = clientEmail_
 
 
 
@@ -26,7 +28,9 @@ class Data(name_: String?, year_:Int, month_: Int, day_:Int, hour_ : Int, minute
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString()
     )
 
     fun getName() : String? {
@@ -41,6 +45,14 @@ class Data(name_: String?, year_:Int, month_: Int, day_:Int, hour_ : Int, minute
         return Time(hour, minute, 0)
     }
 
+    fun getClientName() : String? {
+        return clientName
+    }
+
+    fun getClientEmail() : String? {
+        return clientEmail
+    }
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeInt(year)
@@ -48,6 +60,8 @@ class Data(name_: String?, year_:Int, month_: Int, day_:Int, hour_ : Int, minute
         parcel.writeInt(day)
         parcel.writeInt(hour)
         parcel.writeInt(minute)
+        parcel.writeString(clientName)
+        parcel.writeString(clientEmail)
     }
 
     override fun describeContents(): Int {

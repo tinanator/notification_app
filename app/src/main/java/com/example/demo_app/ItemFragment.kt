@@ -24,6 +24,7 @@ class ItemFragment : Fragment() {
 
 
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -47,9 +48,9 @@ class ItemFragment : Fragment() {
             val message = arguments!!.getString("message")
 
 
-            if (message != null) {
-                allData.addData(Data(message, 7, 8, 7, 8, 8))
-            }
+//            if (message != null) {
+//            //    allData.addData(Data(message, 7, 8, 7, 8, 8))
+//            }
         }
     }
 

@@ -2,6 +2,8 @@ package com.example.demo_app
 
 import android.R.attr.fragment
 import android.R.attr.key
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
@@ -33,6 +35,9 @@ class DisplayMessageActivity : AppCompatActivity() {
     private var hour = 0
     private var minute = 0
 
+    private var clientName = ""
+    private var clientEmail = ""
+
     lateinit var calendar : GregorianCalendar
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -45,11 +50,24 @@ class DisplayMessageActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0) {
+            clientName =
+                  "${data!!.extras!!.get("first").toString()} ${data.extras!!.get("last")
+                             .toString()}"
+            clientEmail =  data.extras!!.get("email").toString()
+            findViewById<TextView>(R.id.show_client_name).text = clientName
+            findViewById<TextView>(R.id.show_email).text = clientEmail
+        }
+    }
+
     fun add(view: View) {
         val name = findViewById<EditText>(R.id.textView).text
         val pos = 2
         //val date = findViewById<EditText>(R.id.editTextDate).text
-        val data = Data(name.toString(), year, month, day, hour, minute)
+        val data = Data(name.toString(), year, month, day, hour, minute, clientName, clientEmail)
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("message", data)
         }
@@ -58,7 +76,9 @@ class DisplayMessageActivity : AppCompatActivity() {
 
     fun chooseClient(view: View) {
         val intent = Intent(this, ClientsActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, 0)
+
+
     }
 
 
