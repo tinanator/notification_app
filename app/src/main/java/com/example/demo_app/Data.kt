@@ -1,11 +1,12 @@
 package com.example.demo_app
 
+import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.*
 import java.sql.Time
-import java.text.SimpleDateFormat
-import java.time.Month
 import java.util.*
+
 
 //date in ms
 
@@ -80,6 +81,59 @@ class Data(name_: String?, year_:Int, month_: Int, day_:Int, hour_ : Int, minute
 
 }
 
+@Entity
+data class Reminder (
+        @PrimaryKey(autoGenerate = true) val id: Int,
+        @ColumnInfo val name: String?,
+        @ColumnInfo val year: Int,
+        @ColumnInfo val month: Int,
+        @ColumnInfo val day: Int,
+        @ColumnInfo val minute: Int,
+        @ColumnInfo val hour: Int,
+        @ColumnInfo val clientName: String?,
+        @ColumnInfo val clientEmail: String?
+) {
+
+}
+
+@Dao
+interface ReminderDao {
+    @Query("SELECT * FROM Reminder")
+    fun getAll(): List<Reminder>
+
+    @Query("SELECT * FROM Reminder WHERE id IN (:ReminderIds)")
+    fun loadAllByIds(ReminderIds: IntArray): List<Reminder>
+
+    @Insert
+    fun insertAll(vararg rem: Reminder)
+
+    @Delete
+    fun delete(user: Reminder)
+
+    @Insert
+    suspend fun insert(rem: Reminder) : Long
+}
+
+@Database(entities = arrayOf(Reminder::class), version = 1)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun reminderDao() : ReminderDao
+    companion object {
+        var INSTANCE: AppDatabase? = null
+
+        fun getAppDataBase(context: Context): AppDatabase? {
+            if (INSTANCE == null){
+                synchronized(AppDatabase::class){
+                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "MyDatabase.db").build()
+                }
+            }
+            return INSTANCE
+        }
+
+        fun destroyDataBase(){
+            INSTANCE = null
+        }
+    }
+}
 
 class DataModel() {
     private val dataset = mutableListOf<Data>()

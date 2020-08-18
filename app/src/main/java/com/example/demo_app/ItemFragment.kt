@@ -54,9 +54,9 @@ class ItemFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
 
-                view.adapter = MyItemRecyclerViewAdapter(allData) {
+                view.adapter = ReminderListAdapter(allData) {
                         Toast.makeText(this.context, "click", Toast.LENGTH_SHORT).show()
-                        event.showDetails(it)
+                        event.showReminderDetails(it)
                 }
             }
         }
@@ -80,7 +80,7 @@ class ItemFragment : Fragment() {
     }
 
     interface onItemClickListener {
-        fun showDetails(data:Data)
+        fun showReminderDetails(data:Data)
     }
 
 }

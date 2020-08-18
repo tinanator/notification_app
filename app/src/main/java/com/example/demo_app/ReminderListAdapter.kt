@@ -6,19 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 
 import com.example.demo_app.dummy.DummyContent.DummyItem
-import kotlin.properties.Delegates
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
  * TODO: Replace the implementation with code for your data type.
  */
-class MyItemRecyclerViewAdapter(
+class ReminderListAdapter(
         private val values: DataModel, private val listener: (Data) -> Unit
 )
-    : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<ReminderListAdapter.ViewHolder>() {
 
     private val dataset = values
     private var selectedPos = -1

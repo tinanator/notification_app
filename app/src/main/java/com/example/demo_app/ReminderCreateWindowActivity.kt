@@ -1,32 +1,23 @@
 package com.example.demo_app
 
-import android.R.attr.fragment
-import android.R.attr.key
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.app.TimePickerDialog
+import android.app.*
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.TimePicker
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_display_message.*
-import kotlinx.android.synthetic.main.fragment_item.*
-import java.sql.Time
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class DisplayMessageActivity : AppCompatActivity() {
+
+class ReminderCreateWindowActivity : AppCompatActivity() {
 
     private var year = 2020
     private var month = 7
@@ -38,16 +29,14 @@ class DisplayMessageActivity : AppCompatActivity() {
     private var clientName = ""
     private var clientEmail = ""
 
-    lateinit var calendar : GregorianCalendar
+    private lateinit var calendar : GregorianCalendar
 
     @RequiresApi(Build.VERSION_CODES.O)
-    val formatter = DateTimeFormatter.ofPattern("HH mm")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_display_message)
-        val message = intent.getStringExtra(EXTRA_MESSAGE)
-
+        setContentView(R.layout.reminder_create_window)
+        calendar = GregorianCalendar()
     }
 
     @SuppressLint("SetTextI18n")
@@ -63,6 +52,12 @@ class DisplayMessageActivity : AppCompatActivity() {
         }
     }
 
+    private var alarmMgr: AlarmManager? = null
+    private lateinit var alarmIntent: Intent
+    private lateinit var alarmPendingIntent: PendingIntent
+
+    @SuppressLint("ShowToast")
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun add(view: View) {
         val name = findViewById<EditText>(R.id.textView).text
         val pos = 2
@@ -71,14 +66,28 @@ class DisplayMessageActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("message", data)
         }
+
+         alarmIntent = Intent(applicationContext, NotifierAlarmReceiver::class.java)
+       // val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+
+         alarmPendingIntent =
+            PendingIntent.getBroadcast(
+                applicationContext,
+                SystemClock.elapsedRealtime().toInt(),
+                alarmIntent,
+                0
+            )
+
+        alarmMgr = getSystemService(ALARM_SERVICE) as AlarmManager
+       // alarmMgr!!.setExact(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10*1000, alarmPendingIntent)
+        alarmMgr!!.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 10*1000, alarmPendingIntent)
+       // Toast.makeText(this, calendar.timeInMillis.toString(), Toast.LENGTH_LONG)
         startActivity(intent)
     }
 
     fun chooseClient(view: View) {
         val intent = Intent(this, ClientsActivity::class.java)
         startActivityForResult(intent, 0)
-
-
     }
 
 
@@ -105,8 +114,7 @@ class DisplayMessageActivity : AppCompatActivity() {
         hour = hour_
         minute = minute_
 
-        calendar = GregorianCalendar(year, month, day, hour, minute)
-
+        calendar.set(year, month, day, hour, minute)
 
 
         findViewById<TextView>(R.id.editTextTime).text = LocalTime.of(hour, minute).toString()
@@ -120,7 +128,7 @@ class DisplayMessageActivity : AppCompatActivity() {
         month = month_
         day = day_
 
-        calendar = GregorianCalendar(year, month, day)
+        calendar.set(year, month, day, hour, minute)
         findViewById<TextView>(R.id.editTextDate).text = LocalDate.of(year, month, day).toString()
     }
 

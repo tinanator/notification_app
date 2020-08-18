@@ -5,7 +5,7 @@
     android:id="@+id/display"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DisplayMessageActivity">
+    tools:context=".ReminderCreateWindowActivity">
 
 
     <EditText
@@ -106,6 +106,7 @@
         android:text="Choose Client"
         app:layout_constraintBottom_toTopOf="@+id/show_client_name"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDate"
         app:layout_constraintVertical_bias="0.48000002" />

@@ -1,26 +1,21 @@
 package com.example.demo_app
 
 import android.app.Activity
-import android.app.DownloadManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.toolbox.*
-import com.example.demo_app.dummy.DummyContent
+import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.ClassCastException
-import java.lang.reflect.Method
 
 /**
  * A fragment representing a list of Items.
@@ -75,7 +70,7 @@ class clientsFragment : Fragment() {
 
                 val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener<JSONObject> { response ->
                     obj = response.getJSONArray("results")
-                    adapter = MyItemRecyclerViewAdapter2(obj) { firstName: String, lastName: String, email: String ->
+                    adapter = ClientListAdapter(obj) { firstName: String, lastName: String, email: String ->
                         event.chooseClient(firstName, lastName, email)
 
                     }
@@ -87,7 +82,7 @@ class clientsFragment : Fragment() {
                     print("error")
                 })
 
-                MySingleton.getInstance(this.context).addToRequestQueue(jsonObjectRequest)
+                RequestQueueSinglton.getInstance(this.context).addToRequestQueue(jsonObjectRequest)
 
             }
         }

@@ -1,22 +1,12 @@
 package com.example.demo_app
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-
-import kotlin.concurrent.fixedRateTimer
+import java.io.File
 
 const val EXTRA_MESSAGE = "com.example.demo_app.MESSAGE"
 
@@ -30,6 +20,11 @@ lateinit var fragment : ItemFragment
 
 class MainActivity : AppCompatActivity(), ItemFragment.onItemClickListener{
     override fun onCreate(savedInstanceState: Bundle?) {
+
+//        val db = Room.databaseBuilder(
+//            applicationContext,
+//            AppDatabase::class.java, "myDatabase"
+//        ).build()
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,7 +41,7 @@ class MainActivity : AppCompatActivity(), ItemFragment.onItemClickListener{
         }
     }
 
-    override fun showDetails(data:Data) {
+    override fun showReminderDetails(data:Data) {
         Toast.makeText(this, "name: " + data.getName(), Toast.LENGTH_SHORT).show()
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra("details", data)
@@ -54,28 +49,9 @@ class MainActivity : AppCompatActivity(), ItemFragment.onItemClickListener{
     }
 
     fun addData(view: View) {
-        val intent = Intent(this, DisplayMessageActivity::class.java)
+        val intent = Intent(this, ReminderCreateWindowActivity::class.java)
         startActivity(intent)
     }
-
-    //val builder = NotificationCompat.Builder(this, )
-
-//    private fun createNotificationChannel() {
-//        // Create the NotificationChannel, but only on API 26+ because
-//        // the NotificationChannel class is new and not in the support library
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val name = getString(R.string.)
-//            val descriptionText = getString(R.string.channel_description)
-//            val importance = NotificationManager.IMPORTANCE_DEFAULT
-//            val channel = NotificationChannel(Build.ID, name, importance).apply {
-//                description = descriptionText
-//            }
-//            // Register the channel with the system
-//            val notificationManager: NotificationManager =
-//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channel)
-//        }
-//    }
 
 
 
