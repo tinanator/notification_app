@@ -9,6 +9,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import java.sql.Time
+import java.util.*
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -17,14 +19,14 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(R.layout.details_fragment_test_fragment)
         val bundle = intent.extras
         if (bundle != null) {
-            val message = bundle.getParcelable<Data>("details")
+            val message = bundle.getParcelable<Reminder>("details")
 
             if (message != null) {
-                findViewById<TextView>(R.id.show_name).text = message.getName()
-                findViewById<TextView>(R.id.show_date).text = message.getDate().toString()
-                findViewById<TextView>(R.id.show_time).text = message.getTime().toString()
-                findViewById<TextView>(R.id.client_name).text = message.getClientName()
-                findViewById<TextView>(R.id.client_email).text = message.getClientEmail()
+                findViewById<TextView>(R.id.show_name).text = message.name
+                findViewById<TextView>(R.id.show_date).text = Date(message.year, message.month, message.day).toString()
+                findViewById<TextView>(R.id.show_time).text = Time(message.hour, message.minute, 0).toString()
+                findViewById<TextView>(R.id.client_name).text = message.clientName
+                findViewById<TextView>(R.id.client_email).text = message.clientEmail
             }
         }
 

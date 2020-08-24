@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 
 import com.example.demo_app.dummy.DummyContent.DummyItem
 
@@ -14,13 +15,13 @@ import com.example.demo_app.dummy.DummyContent.DummyItem
  * TODO: Replace the implementation with code for your data type.
  */
 class ReminderListAdapter(
-        private val values: DataModel, private val listener: (Data) -> Unit
+      private val listener: (Reminder) -> Unit
 )
     : RecyclerView.Adapter<ReminderListAdapter.ViewHolder>() {
 
-    private val dataset = values
+   // private var dataset = values
     private var selectedPos = -1
-
+    private var dbData : List<Reminder> = listOf<Reminder>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,22 +33,23 @@ class ReminderListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = dataset.getData()[position]
-        holder.idView.text = item.getName()
+        //val item = dataset.getData()[position]
+        val item = dbData[position]
+        holder.idView.text = item.name
         holder.itemView.setOnClickListener  {
             listener(item)
             selectedPos = position
             notifyItemChanged(position)
 
         }
-
-
-        if (selectedPos == position) {
-            holder.itemView.setBackgroundColor(Color.BLUE)
-        }
     }
 
-    override fun getItemCount(): Int = dataset.getSize()
+    override fun getItemCount(): Int = dbData.size
+
+    internal fun setReminders(reminders: List<Reminder>) {
+        this.dbData = reminders
+        notifyDataSetChanged()
+    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val idView: TextView = view.findViewById(R.id.item_number)

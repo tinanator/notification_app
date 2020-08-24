@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +39,6 @@ class ItemFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -54,10 +55,16 @@ class ItemFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
 
-                view.adapter = ReminderListAdapter(allData) {
+                view.adapter = ReminderListAdapter {
                         Toast.makeText(this.context, "click", Toast.LENGTH_SHORT).show()
                         event.showReminderDetails(it)
                 }
+                val wordViewModel = ViewModelProvider(activity!!).get(ReminderViewModel::class.java)
+                wordViewModel.allReminders.observe(activity!!, Observer { rem ->
+                    // Update the cached copy of the words in the adapter.
+                    rem?.let { (view.adapter as ReminderListAdapter).setReminders(it) }
+                })
+
             }
         }
         return view
@@ -80,7 +87,7 @@ class ItemFragment : Fragment() {
     }
 
     interface onItemClickListener {
-        fun showReminderDetails(data:Data)
+        fun showReminderDetails(rem:Reminder)
     }
 
 }

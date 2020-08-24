@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 
@@ -14,37 +16,33 @@ private lateinit var recyclerView: RecyclerView
 private lateinit var viewAdapter: RecyclerView.Adapter<*>
 private lateinit var viewManager: RecyclerView.LayoutManager
 
-val allData = DataModel()
 
-lateinit var fragment : ItemFragment
+
 
 class MainActivity : AppCompatActivity(), ItemFragment.onItemClickListener{
     override fun onCreate(savedInstanceState: Bundle?) {
 
-//        val db = Room.databaseBuilder(
-//            applicationContext,
-//            AppDatabase::class.java, "myDatabase"
-//        ).build()
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         val bundle = intent.extras
         if (bundle != null) {
-            val message = bundle.getParcelable<Data>("message")
+            val message = bundle.getParcelable<Reminder>("message")
 
             if (message != null) {
-                allData.addData(message)
-                fragment = supportFragmentManager.findFragmentById(R.id.list) as ItemFragment
+
+                val fragment = supportFragmentManager.findFragmentById(R.id.list) as ItemFragment
                 (fragment.view as RecyclerView).adapter!!.notifyDataSetChanged()
             }
         }
     }
 
-    override fun showReminderDetails(data:Data) {
-        Toast.makeText(this, "name: " + data.getName(), Toast.LENGTH_SHORT).show()
+    override fun showReminderDetails(rem:Reminder) {
+        Toast.makeText(this, "name: " + rem.name, Toast.LENGTH_SHORT).show()
         val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra("details", data)
+        intent.putExtra("details", rem)
         startActivity(intent)
     }
 
