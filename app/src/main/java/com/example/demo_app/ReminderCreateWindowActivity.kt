@@ -6,15 +6,20 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-
+import kotlin.time.ExperimentalTime
+import kotlin.time.days
+import kotlin.time.hours
+import kotlin.time.minutes
 
 
 class ReminderCreateWindowActivity : AppCompatActivity() {
@@ -56,15 +61,18 @@ class ReminderCreateWindowActivity : AppCompatActivity() {
     private lateinit var alarmIntent: Intent
     private lateinit var alarmPendingIntent: PendingIntent
 
+    @ExperimentalTime
     @SuppressLint("ShowToast")
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun add(view: View) {
         val name = findViewById<EditText>(R.id.textView).text
         val pos = 2
         //val date = findViewById<EditText>(R.id.editTextDate).text
-        val data = Data(name.toString(), year, month, day, hour, minute, clientName, clientEmail)
+        val rem = Reminder(name.toString(), year, month, day, hour, minute, clientName, clientEmail)
+        val reminderViewModel = ViewModelProvider(this).get(ReminderViewModel::class.java)
+        val id = reminderViewModel.insert(rem)
         val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("message", data)
+            putExtra("message", rem)
         }
 
          alarmIntent = Intent(applicationContext, NotifierAlarmReceiver::class.java)
@@ -75,12 +83,13 @@ class ReminderCreateWindowActivity : AppCompatActivity() {
                 applicationContext,
                 SystemClock.elapsedRealtime().toInt(),
                 alarmIntent,
-                0
+                id
             )
-
+        Log.i("id", id.toString())
         alarmMgr = getSystemService(ALARM_SERVICE) as AlarmManager
        // alarmMgr!!.setExact(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10*1000, alarmPendingIntent)
-        alarmMgr!!.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 10*1000, alarmPendingIntent)
+        alarmMgr!!.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.timeInMillis, alarmPendingIntent)
+        Log.i("time", calendar.timeInMillis.hours.toString() + ':' + calendar.timeInMillis.minutes.toString())
        // Toast.makeText(this, calendar.timeInMillis.toString(), Toast.LENGTH_LONG)
         startActivity(intent)
     }
@@ -116,7 +125,8 @@ class ReminderCreateWindowActivity : AppCompatActivity() {
 
         calendar.set(year, month, day, hour, minute)
 
-
+        Log.i("time222", "$hour $minute")
+        Log.i("time333", calendar[GregorianCalendar.HOUR].toString() + ':' + calendar[GregorianCalendar.MINUTE].toString())
         findViewById<TextView>(R.id.editTextTime).text = LocalTime.of(hour, minute).toString()
           //  calendar.get(Calendar.HOUR).toString() + ':' + calendar.get(Calendar.MINUTE)
     }
@@ -129,6 +139,7 @@ class ReminderCreateWindowActivity : AppCompatActivity() {
         day = day_
 
         calendar.set(year, month, day, hour, minute)
+
         findViewById<TextView>(R.id.editTextDate).text = LocalDate.of(year, month, day).toString()
     }
 
